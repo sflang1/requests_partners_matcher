@@ -5,3 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+def seed_materials
+  Material.create(name: 'Wood')
+  Material.create(name: 'Carpet')
+  Material.create(name: 'Tiles')
+end
+
+
+if Material.count == 0
+  seed_materials
+end
