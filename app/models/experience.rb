@@ -1,5 +1,5 @@
 class Experience < ApplicationRecord
-  belongs_to    :materials
-  belongs_to    :partners
+  belongs_to    :material
+  belongs_to    :partner
 
 end

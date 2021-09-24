@@ -3,5 +3,11 @@ Rails.application.routes.draw do
 
   root to: 'dashboard#index'
 
+  namespace :api do
+    resources :materials, only: [:index]
+
+    resources :requests, only: [:create]
+  end
+
   get '/*path' => 'dashboard#index'
 end

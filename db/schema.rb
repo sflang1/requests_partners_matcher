@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 2021_09_23_155607) do
   enable_extension "plpgsql"
 
   create_table "experiences", force: :cascade do |t|
-    t.bigint "materials_id"
-    t.bigint "partners_id"
+    t.bigint "material_id"
+    t.bigint "partner_id"
     t.integer "years"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["materials_id"], name: "index_experiences_on_materials_id"
-    t.index ["partners_id"], name: "index_experiences_on_partners_id"
+    t.index ["material_id"], name: "index_experiences_on_material_id"
+    t.index ["partner_id"], name: "index_experiences_on_partner_id"
   end
 
   create_table "materials", force: :cascade do |t|
@@ -41,14 +41,14 @@ ActiveRecord::Schema.define(version: 2021_09_23_155607) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.bigint "materials_id"
+    t.bigint "material_id"
     t.decimal "lat", precision: 10, scale: 6
     t.decimal "lng", precision: 10, scale: 6
     t.decimal "area"
     t.string "phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["materials_id"], name: "index_requests_on_materials_id"
+    t.index ["material_id"], name: "index_requests_on_material_id"
   end
 
 end
