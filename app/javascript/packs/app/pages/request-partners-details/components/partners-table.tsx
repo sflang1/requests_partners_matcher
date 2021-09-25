@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
-import { useParams } from "react-router";
-import { fetchPartners } from "../../../actions/actions";
+import { useHistory, useParams } from "react-router";
+import { fetchPartners, makeAReservation } from "../../../shared/actions/actions";
 import { PartnersResponse } from "../../../models/partners-response";
 import { round } from "lodash";
 import { Link } from "react-router-dom";
@@ -13,6 +13,7 @@ const PartnersTable = () => {
   const [ partnerResponse, setPartnerResponse ] = useState<PartnersResponse>();
   const [ page, setPage ] = useState(0);
   const [ perPage, setPerPage ] = useState(10);
+  const history = useHistory();
 
   useEffect(() => {
     fetchPartners({ request_id, page: page + 1, perPage }, (success: boolean, data: PartnersResponse) => {
@@ -33,6 +34,16 @@ const PartnersTable = () => {
     setPage(0);
     setPerPage(parseInt(event.target.value, 10))
     setLoading(true);
+  }
+
+  const onClickMakeReservation = (partner_id: number) => {
+    makeAReservation({ request_id, partner_id }, (success: boolean, _) => {
+      if (success) {
+        history.push('/')
+      } else {
+
+      }
+    })
   }
 
   if (loading) {
@@ -72,7 +83,7 @@ const PartnersTable = () => {
                   <TableCell align="right">{round(partner.distance, 2)}</TableCell>
                   <TableCell align="right">{partner.operating_radius}</TableCell>
                   <TableCell>
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="small" onClick={() => onClickMakeReservation(partner.id)}>
                       Make a reservation
                     </Button>
                   </TableCell>

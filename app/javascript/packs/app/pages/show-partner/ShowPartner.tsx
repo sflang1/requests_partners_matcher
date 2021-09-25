@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { useHistory, useParams } from "react-router";
-import { fetchPartner } from "../../actions/actions";
+import { fetchPartner } from "../../shared/actions/actions";
 import { Partner } from "../../models/partner";
 import MapComponent from "../new-request/components/my-map-component";
 import Loader from "../../shared/components/Loader";
@@ -21,8 +21,6 @@ const ShowPartner = () => {
       setLoading(false);
     })
   }, []);
-
-  console.log("partner ", partner)
 
   return (
     <>

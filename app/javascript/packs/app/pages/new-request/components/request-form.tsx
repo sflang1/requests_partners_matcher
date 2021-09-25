@@ -34,7 +34,6 @@ const RequestForm = ({ materials }) => {
     });
 
     const responseJson = await response.json();
-    console.log("response json ", responseJson);
 
     if (response.status === 200 && responseJson.success) {
       // request created successfully.
@@ -63,8 +62,6 @@ const RequestForm = ({ materials }) => {
         validationSchema={request_schema}>
         {
           ({ handleSubmit, values, handleChange, touched, errors, setFieldValue, isSubmitting, validateField }) => {
-            console.log("touched ", touched);
-            console.log("errors ", errors);
             const showAddressError = (touched.lat && touched.lng) && !!(errors.lat || errors.lng)
 
             return (

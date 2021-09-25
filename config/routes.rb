@@ -8,7 +8,8 @@ Rails.application.routes.draw do
 
     resources :requests, only: [:create, :index] do
       member do
-        get 'partners'
+        get     'partners'
+        post    'make_a_reservation'
       end
     end
 

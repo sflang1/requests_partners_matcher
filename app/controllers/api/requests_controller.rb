@@ -1,6 +1,6 @@
 module Api
   class RequestsController < ApiController
-    before_action :load_request, only: [:partners]
+    before_action :load_request, only: [:partners, :make_a_reservation]
 
     def index
       requests = Request.all.paginate(page: params[:page], per_page: params[:per_page])
@@ -11,7 +11,7 @@ module Api
     end
 
     def create
-      request = Request.new(request_params)
+      request = Request.new(create_params)
       raise BadRequest.new(request.errors.full_messages.join(', ')) unless request.valid?
 
       request.save
@@ -39,9 +39,27 @@ module Api
       })
     end
 
+    def make_a_reservation
+      raise NotFound.new('Record not found') unless Partner.exists?(id: make_a_reservation_params[:partner_id])
+
+      update_params = {
+        assigned_id: make_a_reservation_params[:partner_id],
+        status: :assigned
+      }
+
+      @request.update(update_params)
+      @request.reload
+
+      render_success(@request.api_response)
+    end
+
     private
-    def request_params
+    def create_params
       params.require(:request).permit(:material_id, :lat, :lng, :area, :phone_number)
+    end
+
+    def make_a_reservation_params
+      params.require(:request).permit(:partner_id)
     end
 
     def load_request

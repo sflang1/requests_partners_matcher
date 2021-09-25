@@ -14,7 +14,8 @@ const RequestPartnersDetails = () => {
       <div className="my-4">
         <Typography variant="body1">
           Your results are sorted by partner rating. If the partners have the same rating, they are sorted by the nearest one to you.
-          Only partners with experience in the material of your request are shown. Click in a partner's name to see its details.
+          Only partners with experience in the material of your request and whose operating radius includes your address are shown.
+          Click in a partner's name to see its details.
         </Typography>
       </div>
       <div className="mb-4">

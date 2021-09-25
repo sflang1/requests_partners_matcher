@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@mui/material";
-import { fetchRequests } from "../../../actions/actions";
-import { round } from "lodash";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
+import { fetchRequests } from "../../../shared/actions/actions";
 import { Link } from "react-router-dom";
 import Loader from "../../../shared/components/Loader";
 import { RequestsResponse } from "../../../models/requests-response";
+import { RequestStatus } from "../../../models/request";
 
 const RequestsTable = () => {
   const [loading, setLoading] = useState(true);
@@ -46,6 +46,9 @@ const RequestsTable = () => {
               <TableCell>Id</TableCell>
               <TableCell align="right">Material</TableCell>
               <TableCell align="right">Area</TableCell>
+              <TableCell align="right">Status</TableCell>
+              <TableCell align="right">Assigned Partner</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -59,9 +62,28 @@ const RequestsTable = () => {
             {
               requestsResponse.items.map(request => (
                 <TableRow key={request.id}>
-                  <TableCell>{ request.id }</TableCell>
+                  <TableCell>{request.id}</TableCell>
                   <TableCell align="right">{request.material.name}</TableCell>
                   <TableCell align="right">{request.area}</TableCell>
+                  <TableCell align="right">{request.status}</TableCell>
+                  <TableCell align="right">
+                    {
+                      request.assigned_partner && (
+                        <Link to={`/partners/${request.assigned_partner.id}`}>
+                          {request.assigned_partner.name}
+                        </Link>
+                      )
+                    }
+                  </TableCell>
+                  <TableCell align="right">
+                    {
+                      request.status === "created" && (
+                        <Link to={`/requests/${request.id}/partners`}>
+                          See partners
+                        </Link>
+                      )
+                    }
+                  </TableCell>
                 </TableRow>
               ))
             }

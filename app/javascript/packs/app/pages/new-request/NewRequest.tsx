@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Material } from '../../models/material';
 import RequestForm from './components/request-form';
-import { fetchMaterials } from '../../actions/actions';
+import { fetchMaterials } from '../../shared/actions/actions';
 import Loader from '../../shared/components/Loader';
 
 
