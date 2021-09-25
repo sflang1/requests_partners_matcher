@@ -55,7 +55,7 @@ const RequestsTable = () => {
             {
               requestsResponse.items.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={3}>No results found.</TableCell>
+                  <TableCell colSpan={5}>No results found.</TableCell>
                 </TableRow>
               )
             }
