@@ -18,11 +18,15 @@ class Request < ApplicationRecord
       },
       area: self.area,
       status: self.status,
+      phone_number: self.phone_number,
+      lat: self.lat,
+      lng: self.lng
     }
 
     response[:assigned_partner] = {
       id: self.assigned_partner.id,
-      name: self.assigned_partner.name
+      name: self.assigned_partner.name,
+      price: self.assigned_partner.price
     } unless self.assigned_partner.blank?
 
     response

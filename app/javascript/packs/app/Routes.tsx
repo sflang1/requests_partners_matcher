@@ -20,6 +20,7 @@ import ShowPartner from './pages/show-partner/ShowPartner';
 import MenuIcon from '@mui/icons-material/Menu';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import { useHistory } from "react-router";
+import ConfirmationPage from './pages/confirmation-page/ConfirmationPage';
 
 const Routes = () => {
   const history = useHistory();
@@ -64,6 +65,9 @@ const Routes = () => {
                 </Route>
                 <Route exact path="/partners/:partner_id">
                   <ShowPartner />
+                </Route>
+                <Route exact path="/requests/:request_id/confirmation_page">
+                  <ConfirmationPage />
                 </Route>
                 <Route exact path="/">
                   <Index />

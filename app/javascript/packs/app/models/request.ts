@@ -11,5 +11,8 @@ export interface Request {
   material: Material
   area: number
   status: RequestStatus
+  phone_number: string
+  lat: number
+  lng: number
   assigned_partner?: Partner
 }

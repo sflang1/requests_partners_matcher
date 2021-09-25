@@ -45,14 +45,16 @@ const PartnersTable = () => {
     setLoadingPartners(true);
   }
 
-  const onClickMakeReservation = (partner_id: number) => {
-    makeAReservation({ request_id, partner_id }, (success: boolean, _) => {
-      if (success) {
-        history.push('/')
-      } else {
+  const onClickMakeReservation = (partner_id: number, partner_name: string) => {
+    if (confirm(`Are you sure you want to make a reservation with ${partner_name}?`)) {
+      makeAReservation({ request_id, partner_id }, (success: boolean, _) => {
+        if (success) {
+          history.push(`/requests/${request_id}/confirmation_page`)
+        } else {
 
-      }
-    })
+        }
+      })
+    }
   }
 
   if (loadingPartners || loadingRequest) {
@@ -100,9 +102,9 @@ const PartnersTable = () => {
                   <TableCell align="right">{round(partner.distance, 2)}</TableCell>
                   <TableCell align="right">{partner.operating_radius}</TableCell>
                   <TableCell align="right">€{partner.price}</TableCell>
-                  <TableCell align="right">€{request.area * partner.price}</TableCell>
+                  <TableCell align="right">€{round(request.area * partner.price, 2)}</TableCell>
                   <TableCell>
-                    <Button variant="outlined" size="small" onClick={() => onClickMakeReservation(partner.id)}>
+                    <Button variant="outlined" size="small" onClick={() => onClickMakeReservation(partner.id, partner.name)}>
                       Make a reservation
                     </Button>
                   </TableCell>
