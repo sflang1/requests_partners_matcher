@@ -58,6 +58,14 @@ const ShowPartner = () => {
             </div>
             <div className="mb-4">
               <Typography variant="h6">
+                Price by m²
+              </Typography>
+              <Typography variant="body1">
+                { `€${partner.price}` }
+              </Typography>
+            </div>
+            <div className="mb-4">
+              <Typography variant="h6">
                 Address
               </Typography>
               <MapComponent
