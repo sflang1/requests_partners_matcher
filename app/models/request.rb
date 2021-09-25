@@ -1,5 +1,9 @@
 class Request < ApplicationRecord
-  validates_presence_of   [:lat, :lng, :area, :phone_number, :material]
+  include LatitudeLongitudeValidator
+
+  validates_presence_of       [:area, :phone_number, :material]
+  validates_numericality_of   :area, greater_than: 0
+
   belongs_to        :material
   belongs_to        :assigned_partner, class_name: 'Partner', foreign_key: :assigned_id, optional: true
 

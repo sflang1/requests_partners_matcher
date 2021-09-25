@@ -1,4 +1,6 @@
 class Partner < ApplicationRecord
+  include LatitudeLongitudeValidator
+
   has_many :experiences
   has_many :materials, through: :experiences
 
