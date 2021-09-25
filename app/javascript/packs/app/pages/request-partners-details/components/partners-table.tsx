@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 import { useParams } from "react-router";
 import { fetchPartners } from "../../../actions/actions";
 import { PartnersResponse } from "../../../models/partners-response";
 import { round } from "lodash";
 import { Link } from "react-router-dom";
+import Loader from "../../../shared/components/Loader";
 
 const PartnersTable = () => {
   const { request_id } = useParams();
@@ -12,7 +13,6 @@ const PartnersTable = () => {
   const [ partnerResponse, setPartnerResponse ] = useState<PartnersResponse>();
   const [ page, setPage ] = useState(0);
   const [ perPage, setPerPage ] = useState(10);
-  console.log("request ", request_id);
 
   useEffect(() => {
     fetchPartners({ request_id, page: page + 1, perPage }, (success: boolean, data: PartnersResponse) => {
@@ -36,11 +36,7 @@ const PartnersTable = () => {
   }
 
   if (loading) {
-    return (
-      <div className="flex row justify-center items-center">
-        <CircularProgress size={60} />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -57,6 +53,13 @@ const PartnersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {
+              partnerResponse.items.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5}>No results found.</TableCell>
+                </TableRow>
+              )
+            }
             {
               partnerResponse.items.map(partner => (
                 <TableRow key={partner.id}>

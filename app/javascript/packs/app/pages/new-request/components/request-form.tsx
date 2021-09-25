@@ -38,7 +38,7 @@ const RequestForm = ({ materials }) => {
 
     if (response.status === 200 && responseJson.success) {
       // request created successfully.
-      history.push(`/request/${responseJson.data.id}/partners`)
+      history.push(`/requests/${responseJson.data.id}/partners`)
     } else {
       console.error('An error presented while creating the request');
     }
@@ -62,7 +62,9 @@ const RequestForm = ({ materials }) => {
         }}
         validationSchema={request_schema}>
         {
-          ({ handleSubmit, values, handleChange, touched, errors, setFieldValue, isSubmitting }) => {
+          ({ handleSubmit, values, handleChange, touched, errors, setFieldValue, isSubmitting, validateField }) => {
+            console.log("touched ", touched);
+            console.log("errors ", errors);
             const showAddressError = (touched.lat && touched.lng) && !!(errors.lat || errors.lng)
 
             return (
@@ -93,7 +95,13 @@ const RequestForm = ({ materials }) => {
                   <FormControl error variant="standard">
                     <Typography variant="body1">Address</Typography>
                     <Typography variant="body2">Select an address by clicking on the map</Typography>
-                    <MapComponent />
+                    <MapComponent
+                      onClickMap={(lat, lng) => {
+                        setFieldValue('lat', lat);
+                        setFieldValue('lng', lng);
+                        validateField('lat');
+                        validateField('lng');
+                      }} />
                     <FormHelperText
                       id="component-helper-text"
                       error={showAddressError}>

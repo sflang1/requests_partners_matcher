@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Material } from '../../models/material';
-import { Card, CardContent, Container, LinearProgress } from '@mui/material';
 import RequestForm from './components/request-form';
 import { fetchMaterials } from '../../actions/actions';
+import Loader from '../../shared/components/Loader';
 
 
 const NewRequest = () => {
@@ -22,21 +22,11 @@ const NewRequest = () => {
   }, []);
 
 
-  return (
-    <Container fixed>
-      <Card>
-        <CardContent>
-          {
-            loading ? (
-              <LinearProgress />
-            ): (
-              <RequestForm materials={materials} />
-            )
-          }
-        </CardContent>
-      </Card>
-    </Container>
-  )
+  if (loading) {
+    return <Loader />;
+  }
+
+  return <RequestForm materials={materials} />
 };
 
 export default NewRequest;

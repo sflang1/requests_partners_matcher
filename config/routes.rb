@@ -6,11 +6,13 @@ Rails.application.routes.draw do
   namespace :api do
     resources :materials, only: [:index]
 
-    resources :requests, only: [:create] do
+    resources :requests, only: [:create, :index] do
       member do
         get 'partners'
       end
     end
+
+    resources :partners, only: [:show]
   end
 
   get '/*path' => 'dashboard#index'

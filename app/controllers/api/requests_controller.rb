@@ -2,6 +2,14 @@ module Api
   class RequestsController < ApiController
     before_action :load_request, only: [:partners]
 
+    def index
+      requests = Request.all.paginate(page: params[:page], per_page: params[:per_page])
+      render_success({
+        total_items_count: requests.count,
+        items: requests.map(&:api_response)
+      })
+    end
+
     def create
       request = Request.new(request_params)
       raise BadRequest.new(request.errors.full_messages.join(', ')) unless request.valid?
