@@ -54,14 +54,14 @@ def seed_partners
   carpet_material = Material.find_by(name: 'Carpet')
   tiles_material = Material.find_by(name: 'Tiles')
 
-  # create fifty partners
-  50.times.each do
+  # create an n- number of partners
+  100.times.each do
     ActiveRecord::Base.transaction do
       lat, lng = calculate_rand_lat_lng_for_partner
       # random operating radius between 0 and 4 kilometers
-      operating_radius = Random.rand(1.0..4.0).round(2)
+      operating_radius = Random.rand(1.0..4.5).round(2)
       # a rating between 2 and 5
-      rating = Random.rand(2.0..5.0)
+      rating = Random.rand(2.0..5.0).round(2)
 
       partner = Partner.create(lat: lat, lng: lng, operating_radius: operating_radius, rating: rating)
       # assing a random amount of experience between 1 and 7

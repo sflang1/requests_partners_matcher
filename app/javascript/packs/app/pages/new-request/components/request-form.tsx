@@ -38,7 +38,7 @@ const RequestForm = ({ materials }) => {
 
     if (response.status === 200 && responseJson.success) {
       // request created successfully.
-      history.push(`/request/${responseJson.data.id}/providers`)
+      history.push(`/request/${responseJson.data.id}/partners`)
     } else {
       console.error('An error presented while creating the request');
     }
