@@ -18,12 +18,17 @@ module Api
       # finding paginated partners for this request. Uses geokit-rails gem
       distance_sql = Partner.distance_sql(@request, :kms)
 
-      partners = Partner.select(:id, :operating_radius, :rating, "#{distance_sql} as distance")
+      partners = Partner.select(:id, :operating_radius, :name, :rating, "#{distance_sql} as distance")
+            .joins(:materials)
+            .where(materials: @request.material)
             .where("#{distance_sql} < \"partners\".\"operating_radius\"")
             .paginate(page: params[:page], per_page: params[:per_page])
             .order(rating: :desc, distance: :asc)
 
-      render_success(partners)
+      render_success({
+        total_items_count: partners.count,
+        items: partners
+      })
     end
 
     private
@@ -32,6 +37,7 @@ module Api
     end
 
     def load_request
+      raise NotFound.new('Record not found') unless Request.exists?(id: params[:id])
       @request = Request.find(params[:id])
     end
   end

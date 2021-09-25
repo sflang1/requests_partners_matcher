@@ -167,3 +167,19 @@
     padding-bottom: #{pow(2, -1*$i)}rem;
   }
 }
+
+.flex {
+  display: flex;
+  &.row {
+    flex-direction: row;
+  }
+  &.row-reverse {
+    flex-direction: row-reverse;
+  }
+  &.items-center {
+    align-items: center;
+  }
+  &.justify-center {
+    justify-content: center;
+  }
+}

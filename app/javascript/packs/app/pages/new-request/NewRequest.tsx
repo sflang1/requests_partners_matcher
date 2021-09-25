@@ -2,28 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Material } from '../../models/material';
 import { Card, CardContent, Container, LinearProgress } from '@mui/material';
 import RequestForm from './components/request-form';
+import { fetchMaterials } from '../../actions/actions';
 
 
 const NewRequest = () => {
   const [ loading, setLoading ] = useState<boolean>(true);
   const [ materials, setMaterials ] = useState<Material[]>(null);
 
-  const fetchMaterials = async () => {
-    const response = await fetch('/api/materials.json');
-
-    if (response.status === 200) {
-      const responseJson = await response.json();
-      if (responseJson.success) {
-        setMaterials(responseJson.data);
-        setLoading(false);
-      }
-    } else {
-      console.error("an error presented");
-    }
-  }
-
   useEffect(() => {
-    fetchMaterials();
+    fetchMaterials((success: boolean, data: Material[]) => {
+      if (success) {
+        setMaterials(data);
+      } else {
+        // should show message
+      }
+
+      setLoading(false);
+    });
   }, []);
 
 

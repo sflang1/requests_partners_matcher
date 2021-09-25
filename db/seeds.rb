@@ -63,7 +63,7 @@ def seed_partners
       # a rating between 2 and 5
       rating = Random.rand(2.0..5.0).round(2)
 
-      partner = Partner.create(lat: lat, lng: lng, operating_radius: operating_radius, rating: rating)
+      partner = Partner.create(name: Faker::Company.unique.name, lat: lat, lng: lng, operating_radius: operating_radius, rating: rating)
       # assing a random amount of experience between 1 and 7
       experience_years = Random.rand(1..7)
       # this is a way of finding a random way to assign which materials the partner will have experience with
