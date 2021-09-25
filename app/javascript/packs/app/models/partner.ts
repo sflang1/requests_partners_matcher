@@ -7,6 +7,7 @@ export interface Partner {
   lat?: number
   lng?: number
   rating?: number
+  price?: number
   distance?: number
   experiences?: Experience[]
 }

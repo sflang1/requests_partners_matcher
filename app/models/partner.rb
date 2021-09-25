@@ -12,6 +12,7 @@ class Partner < ApplicationRecord
       rating: self.rating,
       lat: self.lat,
       lng: self.lng,
+      price: self.price,
       experiences: experiences.map {|experience| { years: experience.years, material: { id: experience.material.id, name: experience.material.name } }}
     }
   end

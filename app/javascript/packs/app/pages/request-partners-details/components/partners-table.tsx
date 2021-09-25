@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
 import { useHistory, useParams } from "react-router";
-import { fetchPartners, makeAReservation } from "../../../shared/actions/actions";
+import { fetchPartners, fetchRequest, makeAReservation } from "../../../shared/actions/actions";
 import { PartnersResponse } from "../../../models/partners-response";
 import { round } from "lodash";
 import { Link } from "react-router-dom";
 import Loader from "../../../shared/components/Loader";
+import { Request } from "../../../models/request";
 
 const PartnersTable = () => {
   const { request_id } = useParams();
-  const [ loading, setLoading ] = useState(true);
+  const [ loadingPartners, setLoadingPartners ] = useState(true);
+  const [ loadingRequest, setLoadingRequest ] = useState(true);
   const [ partnerResponse, setPartnerResponse ] = useState<PartnersResponse>();
+  const [ request, setRequest ] = useState<Request>();
   const [ page, setPage ] = useState(0);
   const [ perPage, setPerPage ] = useState(10);
   const history = useHistory();
@@ -20,20 +23,26 @@ const PartnersTable = () => {
       if (success) {
         setPartnerResponse(data)
       }
-
-      setLoading(false);
+      setLoadingPartners(false);
     });
+
+    fetchRequest({ request_id }, (success: boolean, data: Request) => {
+      if (success) {
+        setRequest(data)
+      }
+      setLoadingRequest(false);
+    })
   }, [page, perPage]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-    setLoading(true);
+    setLoadingPartners(true);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPage(0);
     setPerPage(parseInt(event.target.value, 10))
-    setLoading(true);
+    setLoadingPartners(true);
   }
 
   const onClickMakeReservation = (partner_id: number) => {
@@ -46,12 +55,18 @@ const PartnersTable = () => {
     })
   }
 
-  if (loading) {
+  if (loadingPartners || loadingRequest) {
     return <Loader />;
   }
 
   return (
     <>
+      <div className="my-4">
+        <Typography variant="body1">
+          <b>Area:&nbsp;</b>
+          <span>{`${request.area} m²`}</span>
+        </Typography>
+      </div>
       <TableContainer>
         <Table size="medium">
           <TableHead>
@@ -60,6 +75,8 @@ const PartnersTable = () => {
               <TableCell align="right">Rating</TableCell>
               <TableCell align="right">Distance to your address (km)</TableCell>
               <TableCell align="right">Operating Radius (km)</TableCell>
+              <TableCell align="right">Price per m²</TableCell>
+              <TableCell align="right">Total price</TableCell>
               <TableCell/>
             </TableRow>
           </TableHead>
@@ -67,7 +84,7 @@ const PartnersTable = () => {
             {
               partnerResponse.items.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5}>No results found.</TableCell>
+                  <TableCell colSpan={7}>No results found.</TableCell>
                 </TableRow>
               )
             }
@@ -82,6 +99,8 @@ const PartnersTable = () => {
                   <TableCell align="right">{partner.rating}</TableCell>
                   <TableCell align="right">{round(partner.distance, 2)}</TableCell>
                   <TableCell align="right">{partner.operating_radius}</TableCell>
+                  <TableCell align="right">€{partner.price}</TableCell>
+                  <TableCell align="right">€{request.area * partner.price}</TableCell>
                   <TableCell>
                     <Button variant="outlined" size="small" onClick={() => onClickMakeReservation(partner.id)}>
                       Make a reservation

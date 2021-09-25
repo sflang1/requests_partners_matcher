@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :materials, only: [:index]
 
-    resources :requests, only: [:create, :index] do
+    resources :requests, only: [:create, :index, :show] do
       member do
         get     'partners'
         post    'make_a_reservation'

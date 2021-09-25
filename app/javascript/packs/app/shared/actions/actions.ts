@@ -50,6 +50,19 @@ export const fetchRequests = async ({ page, perPage }, callback) => {
   }
 }
 
+export const fetchRequest = async ({ request_id }, callback) => {
+  const response = await fetch(`/api/requests/${request_id}.json`);
+
+  if (response.status === 200) {
+    const responseJson = await response.json();
+    if (responseJson.success) {
+      callback(true, responseJson.data);
+    }
+  } else {
+    callback(false, []);
+  }
+}
+
 export const makeAReservation = async ({ request_id, partner_id }, callback) => {
   const response = await fetch(`/api/requests/${request_id}/make_a_reservation.json`, {
     method: 'POST',

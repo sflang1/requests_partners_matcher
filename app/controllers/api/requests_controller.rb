@@ -1,6 +1,6 @@
 module Api
   class RequestsController < ApiController
-    before_action :load_request, only: [:partners, :make_a_reservation]
+    before_action :load_request, only: [:partners, :make_a_reservation, :show]
 
     def index
       requests = Request.all.paginate(page: params[:page], per_page: params[:per_page])
@@ -22,11 +22,15 @@ module Api
       end
     end
 
+    def show
+      render_success(@request.api_response)
+    end
+
     def partners
       # finding paginated partners for this request. Uses geokit-rails gem
       distance_sql = Partner.distance_sql(@request, :kms)
 
-      partners = Partner.select(:id, :operating_radius, :name, :rating, "#{distance_sql} as distance")
+      partners = Partner.select(:id, :operating_radius, :name, :rating, :price, "#{distance_sql} as distance")
             .joins(:materials)
             .where(materials: @request.material)
             .where("#{distance_sql} < \"partners\".\"operating_radius\"")
